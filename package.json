@@ -9,6 +9,12 @@
   "main": "./dist/pattern-router.cjs",
   "module": "./dist/pattern-router.module.js",
   "unpkg": "./dist/pattern-router.umd.js",
+  "keywords": [
+    "instantsearch",
+    "routing",
+    "path-to-regex",
+    "path-to-regexp"
+  ],
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
