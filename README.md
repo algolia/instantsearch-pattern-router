@@ -5,18 +5,19 @@ A router for instantsearch which allows simple URLs to be written in the path! C
 - InstantSearch.js v3+
 - Vue InstantSearch v2+
 - Angular InstantSearch v2+
+- React InstantSearch Hooks v6+
 
 ```js
 // either via import:
-import { patternRouter, windowEnvironment } from 'instantsearch-pattern-router';
+import { patternRouter, getWindowEnvironment } from '@algolia/instantsearch-pattern-router';
 // or via umd:
-const { patternRouter, windowEnvironment } = window.instantsearchPatternRouter;
+const { patternRouter, getWindowEnvironment } = window.instantsearchPatternRouter;
 
 instantsearch({
   routing: {
     router: patternRouter({
       pattern: '/search/:hierarchy*/c/category?',
-      environment: windowEnvironment,
+      environment: getWindowEnvironment(),
       // optional
       windowTitle: ({ category }) => `My Site Search — ${category}`,
       writeDelay: 400,
