@@ -1,6 +1,6 @@
 {
   "name": "@algolia/instantsearch-pattern-router",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a router for instantsearch made for paths",
   "license": "MIT",
   "type": "module",
