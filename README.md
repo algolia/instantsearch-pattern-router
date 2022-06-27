@@ -34,6 +34,24 @@ instantsearch({
 
 A pattern is a string of segments, more detailed examples can be found on the [path-to-regexp documentation](https://github.com/pillarjs/path-to-regexp).
 
+### queryString `object`
+
+If you want to further customize how the query string is parsed and written, you can pass a custom object with `read` and `write` keys, defaulting to:
+
+```ts
+const defaultQueryString: QueryStringParameter = {
+  read({ qsModule, search }) {
+    return qsModule.parse(search, {
+      arrayLimit: 99,
+      ignoreQueryPrefix: true,
+    }) as TRouteState;
+  },
+  write({ qsModule, state }) {
+    return qsModule.stringify(state, { addQueryPrefix: true });
+  },
+}
+```
+
 ### Environment `object`
 
 Environment is an option to make this package usable in the browser, but also in other environments, like server-side rendering. The keys that are expected are:

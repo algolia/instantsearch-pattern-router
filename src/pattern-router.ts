@@ -22,13 +22,30 @@ export type Environment = {
   setTitle?: (title?: string) => void;
 };
 
+type QueryStringParameter<TRouteState> = {
+  read(params: { qsModule: typeof qs; search: string }): TRouteState;
+  write(params: { qsModule: typeof qs; state: TRouteState }): string;
+};
+
 export function patternRouter<TRouteState extends object = UiState>({
   pattern,
+  queryString = {
+    read({ qsModule, search }) {
+      return qsModule.parse(search, {
+        arrayLimit: 99,
+        ignoreQueryPrefix: true,
+      }) as TRouteState;
+    },
+    write({ qsModule, state }) {
+      return qsModule.stringify(state, { addQueryPrefix: true });
+    },
+  },
   title: titleFn,
   environment,
   writeDelay = 400,
 }: {
   pattern: `/${string}`;
+  queryString: QueryStringParameter<TRouteState>;
   title?: (routeState: TRouteState) => string;
   environment: Environment;
   writeDelay?: number;
@@ -66,10 +83,7 @@ export function patternRouter<TRouteState extends object = UiState>({
       return {} as TRouteState;
     }
 
-    const queryParams = qs.parse(url.search, {
-      arrayLimit: 99,
-      ignoreQueryPrefix: true,
-    }) as TRouteState;
+    const queryParams = queryString.read({ qsModule: qs, search: url.search });
 
     return Object.assign({}, res.params, queryParams);
   }
@@ -86,7 +100,10 @@ export function patternRouter<TRouteState extends object = UiState>({
         )
       );
 
-      url.search = qs.stringify(queryState, { addQueryPrefix: true });
+      url.search = queryString.write({
+        qsModule: qs,
+        state: queryState as TRouteState,
+      });
 
       return url.toString();
     },
